@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>Project 2 Report</title>
+        <style>
+            :root {
+                --color-neutral-95: hsl(220 10% 95%);
+                --color-neutral-90: hsl(220 10% 90%);
+                --color-neutral-80: hsl(220 10% 80%);
+                --color-neutral-70: hsl(220 10% 70%);
+                --color-neutral-60: hsl(220 10% 60%);
+                --color-neutral-50: hsl(220 10% 50%);
+                --color-neutral-40: hsl(220 10% 40%);
+                --color-neutral-30: hsl(220 10% 30%);
+                --color-neutral-20: hsl(220 10% 20%);
+                --color-neutral-10: hsl(220 10% 10%);
+            }
+
+            html {
+                font: 100%/1.5 system-ui;
+                counter-reset: figure;
+                background: var(--color-neutral-95);
+                max-width: min(75vw, 80em);
+                margin: 0 auto;
+            }
+
+            /* Headings */
+
+            h1,
+            h2,
+            h3,
+            h4,
+            h5,
+            h6 {
+                line-height: 1.1;
+                font-weight: 600;
+                text-wrap: balance;
+            }
+
+            h1,
+            h2 {
+                border-bottom: 1px solid var(--color-neutral-80);
+                padding-bottom: 0.2em;
+            }
+
+            h1 {
+                margin-block: 1em 0.5rem;
+                font-size: clamp(2.5em, 150% + 2vh + 2vw, 10vmin);
+                font-weight: 800;
+
+                small {
+                    display: block;
+                    width: fit-content;
+                    padding: 0.2em 0.5em;
+                    margin-inline: auto;
+                    color: white;
+                    background: var(--color-neutral-40);
+                    font-size: 40%;
+                    text-transform: uppercase;
+                    white-space: nowrap;
+                }
+            }
+
+            h2 {
+                font-size: 180%;
+                color: var(--color-neutral-30);
+            }
+
+            h3 {
+                font-size: 130%;
+            }
+
+            /* Lists */
+
+            ul,
+            ol {
+                padding-inline-start: 2em;
+            }
+
+            li {
+                &::marker {
+                    color: var(--color-neutral-40);
+                }
+
+                + li {
+                    margin-top: 0.2em;
+                }
+            }
+
+            /* Sectioning elements */
+
+            header {
+                padding-block: 1em;
+                text-align: center;
+            }
+
+            main {
+                background: white;
+                color: var(--color-neutral-20);
+                border-radius: 1rem;
+                padding: 0.1rem 2rem;
+            }
+
+            /* Figures */
+            figure img {
+                width: 100%;
+                height: auto;
+                display: block;
+                border-radius: 0.5rem;
+            }
+
+            figure {
+                margin: 1em 0;
+                padding: 0.5rem;
+                margin-inline: -0.5em;
+                border: 1px solid var(--color-neutral-80);
+                box-shadow: 0 0.1em 0.2em var(--color-neutral-95);
+                text-align: center;
+                background: white;
+
+                > figcaption {
+                    font: 500 75% var(--font-sans);
+                    background: var(--color-neutral-95);
+                    padding: 0.5rem;
+                    margin: -0.5rem;
+                    margin-top: 0.5rem;
+                    counter-increment: figure;
+                    text-align: left;
+
+                    &::before {
+                        content: "Figure " counter(figure) ": ";
+                        font-weight: bold;
+                        color: var(--color-neutral-40);
+                    }
+
+                    a:not(:hover, :focus, :active) {
+                        color: inherit;
+                        text-decoration: underline;
+                        text-decoration-color: color-mix(
+                            in lab,
+                            currentColor,
+                            transparent 70%
+                        );
+                    }
+                }
+            }
+        </style>
+    </head>
+
+    <body>
+        <header>
+            <h1>
+                <small>Project 2</small>
+                Persuasive or Deceptive Visualization?
+            </h1>
+
+            <p><strong>Gabriel Borjas-Perez, Jared Parra, Dylan Craver</strong> — <em>gborjasperez@ucsd.edu;japarra@ucsd.edu;dcraver@ucsd.edu</em></p>
+        </header>
+
+        <main>
+            <h2>Proposition: States are becoming abortion deserts, and it is getting worse over time</h2>
+
+            <section>
+                <h3>FOR the Proposition</h3>
+
+                <figure>
+                    <img src="/ForGraph.png" alt="Bar chart showing the 20 states with the highest Desert Severity Score, with annotations showing the percentage of women lacking clinic access." />
+                    <figcaption> States ranked by a composite Desert Severity Score combining clinic losses,
+                        county coverage gaps, and the share of women living without clinic access.
+                        Higher scores indicate more severe and multi-dimensional access collapse.
+                        Source: Guttmacher Institute.</figcaption>
+                </figure>
+
+                <p>Design Decisions and Rationale:</p>
+
+               <ul>
+    <li>
+        <strong>[-0.5] Pairing two different time windows on the same chart.</strong>
+        Provider change uses 2014 to 2017 data while abortion rate change uses 2017 to 2020,
+        meaning the two bars on each state do not actually cover the same period. We deliberately
+        chose these two columns because together they show the steepest declines and using the
+        same time window for both would have produced smaller and less alarming bars. Placing
+        them side by side implies a direct within period relationship that the data does not
+        support, making the correlation look tighter and more causal than it actually is.
+    </li>
+    <li>
+        <strong>[-1] Filtering to states where both providers and abortion rates declined simultaneously.</strong>
+        We created a calculated filter to isolate only states where both metrics moved in the
+        same negative direction and then plotted only that subset. This filter does not exist
+        in the raw data and is never disclosed in the chart. The full dataset contains many
+        states where clinic losses did not produce rate declines, which would directly
+        contradict the argument. By surfacing only the states that confirm the pattern we
+        make a selective exception look like a national trend.
+    </li>
+    <li>
+        <strong>[-1] Using two shades of red for both variables anchored left of zero.</strong>
+        Assigning matching red tones to both variables and constraining the x-axis to only
+        show negative values collapses two distinct metrics into a single visual story of
+        decline. We considered using contrasting colors but found that matching reds made
+        it harder for the reader to distinguish the two metrics and easier to read the chart
+        as one unified signal of collapse. The truncated axis that never crosses zero
+        reinforces the impression that there is no positive story anywhere in the data.
+    </li>
+</ul>
+            </section>
+
+            <section>
+                <h3>AGAINST the Proposition</h3>
+
+                <figure>
+                    <img src="/AgainstGraph.png" alt="" />
+                    <figcaption>Each dot represents a state. The x-axis shows how much the number of abortion clinics
+                        changed between 2017 and 2020. The y-axis shows the difference between the occurrencen based
+                        and residence based abortion rate, a positive value means the state is absorbing patients
+                        from elsewhere, a negative value means residents are traveling out. Color encodes the share
+                        of residents who traveled out of state for care. DC excluded.</figcaption>
+                </figure>
+
+                <p>Design Decisions and Rationale:</p>
+
+                <ul>
+    <li>
+        <strong>[-1] Filtering to states where clinics fell but abortion rates rose simultaneously.</strong>
+        We created a calculated filter to isolate only states where the two metrics moved in
+        opposite directions and then presented that subset as if it represents a general pattern.
+        This filter does not exist in the raw data and is never disclosed anywhere in the chart.
+        The full dataset contains many states where clinic losses were accompanied by falling
+        rates which would directly undermine the argument. Surfacing only the contradicting
+        exceptions and framing them as the rule is the most deceptive transformation in
+        either visualization.
+    </li>
+    <li>
+        <strong>[+1] Using the same 2017 to 2020 time window for both variables.</strong>
+        Both clinic change and abortion rate change use identical time bounds which required
+        us to use the clinic change column specifically rather than the provider change column
+        which covers a different period. This was a deliberate data selection choice that makes
+        the comparison apples to apples and harder to dismiss on methodological grounds. We
+        considered the provider column because it shows steeper losses but the inconsistent
+        time window would have been an easy target for criticism so the consistent window
+        was both more earnest and more strategically defensible.
+    </li>
+    <li>
+        <strong>[-0.5] Diverging bar design with opposing colors anchored at zero.</strong>
+        We set up the chart so that clinic losses extend left in pink and rate gains extend
+        right in green both anchored at zero which visually dramatizes the gap between the
+        two variables. We considered a standard grouped bar chart but found it did not
+        communicate the opposition as forcefully. The diverging design makes small differences
+        in magnitude look like large structural divergences and the title tells the reader
+        how to interpret that divergence before they examine a single state combining charged
+        framing with a design that amplifies the apparent decoupling of supply and demand.
+    </li>
+    <li>
+        <strong>[-1] Plotted both metrics on the same x-axis: </strong>The percent change in clinics and the percent change in abortion rate measure different things: supply and demand. Putting them on the same axis makes them look more directly comparable than they really are. For example, a 33% drop in clinics next to a 2% increase in abortion rate can visually feel like a balanced comparison, even though the clinic loss is much larger in practical terms.
+    </li>
+    <li>
+        <strong>[-2] Used "clinics" in Chart 1 but "providers" in Chart 2: </strong>Clinics are dedicated facilities, while providers can also include hospitals and physicians’ offices. Each chart uses the measure that best supports its message. The false side uses clinics to show that even when facilities decline, abortion rates do not always drop. The true side uses providers to show a broader decline in access overall. A more honest version would use the same measure across both charts.
+    </li>
+    <li>
+        <strong>[-1] Made rate increases pop in bold: </strong> We made the rate increases bold while leaving the clinic decreases in a small gray font. It pulls your eve straight to the side we want
+            you to focus on and quietly downplays how much clinic access actually fell. Honestly, both numbers matter equally but matching the styles would've made the rate growth blend in instead of feeling like the headline.
+         
+    </li>
+</ul>
+            </section>
+
+            <section>
+                <h2>Final Reflection</h2>
+
+                <p> Building both sides of this argument from the same dataset forced us to confront how much
+                    visualization is an act of framing rather than neutral reporting. The data does not speak
+                    for itself, every choice about which columns to use, which time window to show, which states
+                    to highlight, and what to title the chart shapes what story the reader walks away with.
+                    What surprised us most was how legitimate many of our deceptive choices felt in the moment.
+                    Pairing two different time windows felt reasonable because the data did not give us a cleaner
+                    option. Filtering to states where both metrics fell felt justified because those states
+                    genuinely tell a coherent story. It was only when we stepped back and asked what we were
+                    leaving out that the manipulation became visible.
+                </p>
+                <p>
+                    This process changed how we think about ethical visualization. We came in assuming there
+                    was a clear line between earnest and deceptive design, and we left thinking the line is
+                    more of a gradient. Truncating an axis is obviously deceptive. Choosing a red color scheme
+                    for an alarming topic feels justified. But filtering data to the subset that supports your
+                    argument, choosing a metric that only exists because you engineered it, or annotating
+                    outliers in a way that neutralizes them, these all live in a gray zone where intent and
+                    impact are hard to separate. Our working definition of ethical visualization after this
+                    project is that a choice is acceptable if a reasonable reader, shown the full dataset and
+                    your methodology, would still consider your conclusion fair. It becomes misleading when
+                    the conclusion would collapse if the methodology were transparent.
+                </p>
+                <p>
+                    The most difficult part of this assignment was not building the deceptive visualization,
+                    it was building the earnest one. The true side chart went through several iterations because
+                    every time we added a design choice to make it more persuasive, we had to ask ourselves
+                    whether we were crossing a line. The false side was almost easier because we knew we were
+                    constructing an argument and could be deliberate about it. That asymmetry itself felt like
+                    a lesson: the most dangerous visualizations are probably not the ones built with intent to
+                    deceive, but the ones built with intent to inform that quietly make all the same choices anyway.</p>
+            </section>
+        </main>
+    <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"c822b88e119346678db149ed7b7721c9","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>
